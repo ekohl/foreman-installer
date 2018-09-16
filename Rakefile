@@ -91,9 +91,8 @@ SCENARIOS.each do |scenario|
     sh "#{exporter}/kafo-export-params -c config/#{scenario}.yaml -f parsercache --no-parser-cache -o #{BUILDDIR}/parser_cache/#{scenario}.yaml"
   end
 
-  # TODO: filename per scenario?
-  file "#{BUILDDIR}/options.asciidoc" => "#{BUILDDIR}/parser_cache/#{scenario}.yaml" do |t|
-    sh "#{exporter}/kafo-export-params -c config/#{scenario}.yaml -f asciidoc -o #{BUILDDIR}/options.asciidoc"
+  file "#{BUILDDIR}/#{scenario}-options.asciidoc" => "#{BUILDDIR}/parser_cache/#{scenario}.yaml" do |t|
+    sh "#{exporter}/kafo-export-params -c config/#{scenario}.yaml -f asciidoc -o #{BUILDDIR}/#{scenario}-options.asciidoc"
   end
 
   # Store migration scripts under DATADIR, symlinked back into SYSCONFDIR and keep .applied file in SYSCONFDIR
@@ -121,7 +120,7 @@ file "#{BUILDDIR}/foreman-hiera.conf" => 'config/foreman-hiera.conf' do |t|
 end
 
 file "#{BUILDDIR}/foreman-installer.8.asciidoc" =>
-['man/foreman-installer.8.asciidoc', "#{BUILDDIR}/options.asciidoc"] do |t|
+['man/foreman-installer.8.asciidoc', "#{BUILDDIR}/foreman-options.asciidoc"] do |t|
   man_file = t.prerequisites[0]
   options_file = t.prerequisites[1]
 
@@ -176,7 +175,7 @@ task :build => [
   ]
 end].flatten
 
-task :install => :build do |t|
+task :install => :build do
   mkdir_p "#{DATADIR}/foreman-installer"
   cp_r Dir.glob('{checks,hooks,VERSION,README.md,LICENSE}'), "#{DATADIR}/foreman-installer"
   cp_r "#{BUILDDIR}/config", "#{DATADIR}/foreman-installer"
