@@ -92,8 +92,11 @@ foreman_proxy::plugin::remote_execution::ssh: false
 foreman_proxy::plugin::salt: false
 foreman_proxy_content:
   proxy_pulp_yum_to_pulpcore: true
-katello:
-  use_pulp_2_for_yum: false
+global: true
+application: true
+pulp: true
+candlepin: true
+qpid: true
 puppet:
   server: true
   server_environments_owner: apache
