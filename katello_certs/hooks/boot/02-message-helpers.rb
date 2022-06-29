@@ -19,18 +19,18 @@ module KatelloCertsMessageHookContextExtension
     'foreman-installer'
   end
 
-  def proxy_instructions_message(kafo)
-    fqdn = if kafo.param('foreman_proxy_certs', 'parent_fqdn')
-             kafo.param('foreman_proxy_certs', 'parent_fqdn').value
+  def proxy_instructions_message
+    fqdn = if param('foreman_proxy_certs', 'parent_fqdn')
+             param('foreman_proxy_certs', 'parent_fqdn').value
            else
              `hostname -f`
            end
 
-    certs_tar = kafo.param('foreman_proxy_certs', 'certs_tar').value
-    foreman_proxy_fqdn = kafo.param('foreman_proxy_certs', 'foreman_proxy_fqdn').value
+    certs_tar = param('foreman_proxy_certs', 'certs_tar').value
+    foreman_proxy_fqdn = param('foreman_proxy_certs', 'foreman_proxy_fqdn').value
     foreman_oauth_key = read_cache_data("oauth_consumer_key")
     foreman_oauth_secret = read_cache_data("oauth_consumer_secret")
-    org = kafo.param('certs', 'org').value.tr(' ', '_')
+    org = param('certs', 'org').value.tr(' ', '_')
 
     certs_tar_file = File.join('/root', File.basename(certs_tar))
     foreman_url = "https://#{fqdn}"
