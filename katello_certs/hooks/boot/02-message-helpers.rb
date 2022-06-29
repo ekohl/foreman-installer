@@ -31,6 +31,7 @@ module KatelloCertsMessageHookContextExtension
     foreman_oauth_key = read_cache_data("oauth_consumer_key")
     foreman_oauth_secret = read_cache_data("oauth_consumer_secret")
     org = param('certs', 'org').value.tr(' ', '_')
+    colored_org = color(org, :info)
 
     certs_tar_file = File.join('/root', File.basename(certs_tar))
     foreman_url = "https://#{fqdn}"
@@ -43,7 +44,7 @@ module KatelloCertsMessageHookContextExtension
   If you do not have the #{proxy_name} registered to the #{main_instance_name} instance, then please do the following:
 
   1. yum -y localinstall http://#{fqdn}/pub/katello-ca-consumer-latest.noarch.rpm
-  2. subscription-manager register --org "<%= color('#{org}', :info) %>"
+  2. subscription-manager register --org "<%= colored_org %>"
 
   Once this is completed run the steps below to start the #{proxy_name} installation:
 
