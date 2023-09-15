@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'kafo'
+require_relative '../hooks/boot/02-message-helpers'
+require 'ostruct'
+
+# Pretent we're a real Kafo
+Kafo::ColorScheme.new.setup
+kafo = OpenStruct.new(puppet_report: Kafo::PuppetReport.load_report_file('202309151500.yaml'))
+
+hook_context = Kafo::HookContext.new(kafo, nil)
+hook_context.failure_message
